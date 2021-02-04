@@ -19,6 +19,7 @@ const static int16_t CMD_SEND_COMM_TO_PLAYER_SHIP = 0x000A;
 const static int16_t CMD_SET_FACTIONS_STATE = 0x000B;
 const static int16_t CMD_SET_PERSONALITY_ID = 0x000C;
 
+const static int16_t CMD_SET_WEAPON_STORAGE     = 0x0100;
 P<GameMasterActions> gameMasterActions;
 
 REGISTER_MULTIPLAYER_CLASS(GameMasterActions, "GameMasterActions")
@@ -217,6 +218,18 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
             factionInfo[faction_a]->states[faction_b] = (EFactionVsFactionState) stateIdx;
         }
         break;
+        case CMD_SET_WEAPON_STORAGE:
+        {
+            P<SpaceObject> target;
+            int n, max, amount;
+            packet >> target >> n >> max >> amount;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_storage_max[n] = max;
+                targetShip->weapon_storage[n] = amount;
+            }
+        }
+        break;
     }
 }
 
@@ -382,6 +395,13 @@ void GameMasterActions::commandSetFactionsState(int faction_a, int faction_b, in
 {
     sf::Packet packet;
     packet << CMD_SET_FACTIONS_STATE << faction_a << faction_b << stateIdx;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponStorage(P<PlayerSpaceship> target, int n, int max, int amount)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_STORAGE << target << n << max << amount;
     sendClientCommand(packet);
 }
 

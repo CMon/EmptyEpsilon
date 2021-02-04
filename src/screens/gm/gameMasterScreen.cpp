@@ -150,7 +150,7 @@ GameMasterScreen::GameMasterScreen()
         }
     });
     // tweaks only work on the server
-    tweak_button->setPosition(20, -170, ABottomLeft)->setSize(250, 50)->setEnable(bool(game_server))->hide();
+    tweak_button->setPosition(20, -170, ABottomLeft)->setSize(250, 50)->hide();
 
     player_comms_hail = new GuiButton(this, "HAIL_PLAYER", tr("button", "Hail ship"), [this]() {
         for(P<SpaceObject> obj : targets.getTargets())

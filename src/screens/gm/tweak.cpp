@@ -3,6 +3,7 @@
 #include "playerInfo.h"
 #include "gameGlobalInfo.h"
 #include "spaceObjects/spaceship.h"
+#include "GMActions.h"
 
 #include "gui/gui2_listbox.h"
 #include "gui/gui2_autolayout.h"
@@ -39,43 +40,43 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
 
     if (tweak_type == TW_Ship || tweak_type == TW_Player)
     {
-        pages.push_back(new GuiTweakShip(this));
+        pages.push_back(new GuiTweakShip(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Ship"), "");
     }
 
     if (tweak_type == TW_Jammer)
     {
-        pages.push_back(new GuiJammerTweak(this));
+        pages.push_back(new GuiJammerTweak(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Jammer"), "");
     }
 
     if (tweak_type == TW_Ship || tweak_type == TW_Player || tweak_type == TW_Station)
     {
-        pages.push_back(new GuiShipTweakShields(this));
+        pages.push_back(new GuiShipTweakShields(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Shields"), "");
     }
 
     if (tweak_type == TW_Ship || tweak_type == TW_Player)
     {
-        pages.push_back(new GuiShipTweakMissileTubes(this));
+        pages.push_back(new GuiShipTweakMissileTubes(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Tubes"), "");
         pages.push_back(new GuiShipTweakMissileWeapons(this));
         list->addEntry(tr("tab", "Missiles"), "");
-        pages.push_back(new GuiShipTweakBeamweapons(this));
+        pages.push_back(new GuiShipTweakBeamweapons(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Beams"), "");
-        pages.push_back(new GuiShipTweakSystems(this));
+        pages.push_back(new GuiShipTweakSystems(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Systems"), "");
-        pages.push_back(new GuiShipTweakOxygen(this));
+        pages.push_back(new GuiShipTweakOxygen(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Oxygen"), "");
     }
 
     if (tweak_type == TW_Player)
     {
-        pages.push_back(new GuiShipTweakPlayer(this));
+        pages.push_back(new GuiShipTweakPlayer(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Player"), "");
-        pages.push_back(new GuiShipTweakPlayer2(this));
+        pages.push_back(new GuiShipTweakPlayer2(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Player 2"), "");
-        pages.push_back(new GuiShipTweakMessages(this));
+        pages.push_back(new GuiShipTweakMessages(this)); // TODO make it remote changeable
         list->addEntry(tr("tab", "Messages"), "");
     }
 
@@ -242,6 +243,7 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
         missile_storage_amount_slider[n] = new GuiSlider(left_col, "", 0.0, 50, 0.0, [this, n](float value) {
             target->weapon_storage_max[n] = int(round(value));
             target->weapon_storage[n] = std::min(target->weapon_storage[n], target->weapon_storage_max[n]);
+            gameMasterActions->commandSetWeaponStorage(target, n, target->weapon_storage_max[n], target->weapon_storage[n]);
         });
         missile_storage_amount_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -254,6 +256,7 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
         (new GuiLabel(right_col, "", getLocaleMissileWeaponName(EMissileWeapons(n)) + ":", 20))->setSize(GuiElement::GuiSizeMax, 30);
         missile_current_amount_slider[n] = new GuiSlider(right_col, "", 0.0, 50, 0.0, [this, n](float value) {
             target->weapon_storage[n] = std::min(int(round(value)), target->weapon_storage_max[n]);
+            gameMasterActions->commandSetWeaponStorage(target, n, target->weapon_storage_max[n], target->weapon_storage[n]);
         });
         missile_current_amount_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
