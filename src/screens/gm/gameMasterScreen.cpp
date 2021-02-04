@@ -119,7 +119,7 @@ GameMasterScreen::GameMasterScreen()
         factions_dialog->show();
     });
     // tweaks only work on the server
-    factions_button->setPosition(20, -120, ABottomLeft)->setSize(250, 50)->setEnable(bool(game_server));
+    factions_button->setPosition(20, -120, ABottomLeft)->setSize(250, 50);
 
     tweak_button = new GuiButton(this, "TWEAK_OBJECT", tr("button", "Tweak"), [this]() {
         for(P<SpaceObject> obj : targets.getTargets())
