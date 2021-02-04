@@ -341,7 +341,9 @@ void EngineeringScreen::updatePreset(int preset)
     PreferencesManager::set("ENGINEERING.PRESET_COOLANT_"+string(preset), coolant_saved_presets);
 
     //Save preferences
-    if (getenv("HOME"))
+    if (getenv("OPTIONS_FILE")) {
+        PreferencesManager::save(string(getenv("OPTIONS_FILE")));
+    } else if (getenv("HOME"))
         PreferencesManager::save(string(getenv("HOME")) + "/.emptyepsilon/options.ini");
     else
         PreferencesManager::save("options.ini");

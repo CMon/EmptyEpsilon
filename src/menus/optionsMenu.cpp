@@ -194,7 +194,9 @@ OptionsMenu::OptionsMenu()
     // Save options button.
     (new GuiButton(this, "SAVE_OPTIONS", tr("options", "Save"), [this]()
     {
-        if (getenv("HOME"))
+        if (getenv("OPTIONS_FILE")) {
+            PreferencesManager::save(string(getenv("OPTIONS_FILE")));
+        } else if (getenv("HOME"))
             PreferencesManager::save(string(getenv("HOME")) + "/.emptyepsilon/options.ini");
         else
             PreferencesManager::save("options.ini");

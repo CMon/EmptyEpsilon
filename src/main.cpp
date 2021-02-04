@@ -106,7 +106,9 @@ int main(int argc, char** argv)
 #ifdef CONFIG_DIR
     PreferencesManager::load(CONFIG_DIR "options.ini");
 #endif
-    if (getenv("HOME"))
+    if (getenv("OPTIONS_FILE")) {
+        PreferencesManager::load(string(getenv("OPTIONS_FILE")));
+    } else if (getenv("HOME"))
         PreferencesManager::load(string(getenv("HOME")) + "/.emptyepsilon/options.ini");
     else
         PreferencesManager::load("options.ini");
@@ -350,7 +352,9 @@ int main(int argc, char** argv)
     {
 #ifndef _MSC_VER
         // MFC TODO: Fix me -- save prefs to user prefs dir on Windows.
-        if (getenv("HOME"))
+        if (getenv("OPTIONS_FILE")) {
+            PreferencesManager::save(string(getenv("OPTIONS_FILE")));
+        } else if (getenv("HOME"))
         {
 #ifdef __WIN32__
             mkdir((string(getenv("HOME")) + "/.emptyepsilon").c_str());
