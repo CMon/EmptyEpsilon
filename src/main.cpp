@@ -237,7 +237,7 @@ int main(int argc, char** argv)
     {
         InputHandler::touch_screen = true;
     }
-    if (!InputHandler::touch_screen)
+    if (!InputHandler::touch_screen && PreferencesManager::get("headless") == "")
     {
         engine->registerObject("mouseRenderer", new MouseRenderer());
     }
