@@ -11,7 +11,7 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
 : GuiOverlay(owner, "OBJECT_CREATE_SCREEN", sf::Color(0, 0, 0, 128))
 {
     GuiPanel* box = new GuiPanel(this, "FRAME");
-    box->setPosition(0, 0, ACenter)->setSize(1000, 500);
+    box->setPosition(0, 0, ACenter)->setSize(1000, 700);
 
     faction_selector = new GuiSelector(box, "FACTION_SELECTOR", nullptr);
     for(P<FactionInfo> info : factionInfo)
@@ -97,7 +97,7 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
     {
         setCreateScript("CpuShip():setRotation(random(0, 360)):setFactionId(" + string(faction_selector->getSelectionIndex()) + "):setTemplate(\"" + value + "\"):orderRoaming()");
     });
-    cpu_ship_listbox->setTextSize(20)->setButtonHeight(30)->setPosition(-20, 20, ATopRight)->setSize(300, 460);
+    cpu_ship_listbox->setTextSize(20)->setButtonHeight(30)->setPosition(-20, 20, ATopRight)->setSize(300, 660);
     for(string template_name : template_names)
     {
         cpu_ship_listbox->addEntry(template_name, template_name);
