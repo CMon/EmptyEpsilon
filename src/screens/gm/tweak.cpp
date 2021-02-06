@@ -58,7 +58,7 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
 
     if (tweak_type == TW_Ship || tweak_type == TW_Player)
     {
-        pages.push_back(new GuiShipTweakMissileTubes(this)); // TODO make it remote changeable
+        pages.push_back(new GuiShipTweakMissileTubes(this));
         list->addEntry(tr("tab", "Tubes"), "");
         pages.push_back(new GuiShipTweakMissileWeapons(this));
         list->addEntry(tr("tab", "Missiles"), "");
@@ -320,6 +320,7 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     (new GuiLabel(left_col, "", tr("Tube count:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     missile_tube_amount_selector = new GuiSelector(left_col, "", [this](int index, string value) {
         target->weapon_tube_count = index;
+        gameMasterActions->commandSetWeaponTubeCount(target, index);
     });
     for(int n=0; n<max_weapon_tubes; n++)
         missile_tube_amount_selector->addEntry(string(n), "");
@@ -346,13 +347,17 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
 
     (new GuiLabel(right_col, "", tr("tube", "Direction:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     direction_slider = new GuiSlider(right_col, "", -180.0, 180, 0.0, [this](float value) {
-        target->weapon_tube[tube_index].setDirection(roundf(value));
+        auto v = roundf(value);
+        target->weapon_tube[tube_index].setDirection(v);
+        gameMasterActions->commandSetWeaponTubeSetDirection(target, tube_index, v);
     });
     direction_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", tr("tube", "Load time:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     load_time_slider = new GuiSlider(right_col, "", 0.0, 60.0, 0.0, [this](float value) {
-        target->weapon_tube[tube_index].setLoadTimeConfig(roundf(value * 10) / 10);
+        auto v = roundf(value * 10) / 10;
+        target->weapon_tube[tube_index].setLoadTimeConfig(v);
+        gameMasterActions->commandSetWeaponTubeSetLoadTimeConfig(target, tube_index, v);
     });
     load_time_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
@@ -360,6 +365,7 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     size_selector=new GuiSelector(right_col, "", [this](int index, string value)
     {
         target->weapon_tube[tube_index].setSize(EMissileSizes(index));
+        gameMasterActions->commandSetWeaponTubeSetSize(target, tube_index, index);
     });
     size_selector->addEntry(tr("tube", "Small"),MS_Small);
     size_selector->addEntry(tr("tube", "Medium"),MS_Medium);
@@ -371,10 +377,14 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     for(int n=0; n<MW_Count; n++)
     {
         allowed_use[n] = new GuiToggleButton(right_col, "", getLocaleMissileWeaponName(EMissileWeapons(n)), [this, n](bool value) {
-            if (value)
+            if (value) {
                 target->weapon_tube[tube_index].allowLoadOf(EMissileWeapons(n));
-            else
+                gameMasterActions->commandSetWeaponTubeAllowLoadOf(target, tube_index, n);
+            }
+            else {
                 target->weapon_tube[tube_index].disallowLoadOf(EMissileWeapons(n));
+                gameMasterActions->commandSetWeaponTubeDisallowLoadOf(target, tube_index, n);
+            }
         });
         allowed_use[n]->setSize(GuiElement::GuiSizeMax, 40);
     }

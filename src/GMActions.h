@@ -38,9 +38,15 @@ public:
     void commandSendCommToPlayerShip(P<PlayerSpaceship> target, string line);
     void commandSetFactionsState(int faction_a, int faction_b, int stateIdx);
     void commandSetWeaponStorage(P<PlayerSpaceship> target, int n, int max, int amount);
+    void commandSetWeaponTubeCount(P<PlayerSpaceship> target, int count);
+    void commandSetWeaponTubeSetDirection(P<PlayerSpaceship> target, int tube_index, float direction);
+    void commandSetWeaponTubeSetLoadTimeConfig(P<PlayerSpaceship> target, int tube_index, float loadTimeConfig);
+    void commandSetWeaponTubeSetSize(P<PlayerSpaceship> target, int tube_index, int index);
+    void commandSetWeaponTubeAllowLoadOf(P<PlayerSpaceship> target, int tube_index, int missileWeaponIndex);
+    void commandSetWeaponTubeDisallowLoadOf(P<PlayerSpaceship> target, int tube_index, int missileWeaponIndex);
 
     virtual void onReceiveClientCommand(int32_t client_id, sf::Packet& packet);
-    
+
 private:
     void executeContextualGoTo(sf::Vector2f position, bool force, PVector<SpaceObject> selection);
 

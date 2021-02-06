@@ -20,6 +20,12 @@ const static int16_t CMD_SET_FACTIONS_STATE = 0x000B;
 const static int16_t CMD_SET_PERSONALITY_ID = 0x000C;
 
 const static int16_t CMD_SET_WEAPON_STORAGE     = 0x0100;
+const static int16_t CMD_SET_WEAPON_TUBE_COUNT                = 0x0110;
+const static int16_t CMD_SET_WEAPON_TUBE_SET_DIRECTION        = 0x0111;
+const static int16_t CMD_SET_WEAPON_TUBE_SET_LOAD_TIME_CONFIG = 0x0112;
+const static int16_t CMD_SET_WEAPON_TUBE_SET_SIZE             = 0x0113;
+const static int16_t CMD_SET_WEAPON_TUBE_ALLOW_LOAD_OF        = 0x0114;
+const static int16_t CMD_SET_WEAPON_TUBE_DISALLOW_LOAD_OF     = 0x0115;
 P<GameMasterActions> gameMasterActions;
 
 REGISTER_MULTIPLAYER_CLASS(GameMasterActions, "GameMasterActions")
@@ -230,6 +236,74 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
             }
         }
         break;
+        case CMD_SET_WEAPON_TUBE_COUNT:
+        {
+            P<SpaceObject> target;
+            int count;
+            packet >> target >> count;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube_count = count;
+            }
+        }
+        break;
+        case CMD_SET_WEAPON_TUBE_SET_DIRECTION:
+        {
+            P<SpaceObject> target;
+            int tubeIndex;
+            float direction;
+            packet >> target >> tubeIndex >> direction;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube[tubeIndex].setDirection(direction);
+            }
+        }
+        break;
+        case CMD_SET_WEAPON_TUBE_SET_LOAD_TIME_CONFIG:
+        {
+            P<SpaceObject> target;
+            int tubeIndex;
+            float loadTimeConfig;
+            packet >> target >> tubeIndex >> loadTimeConfig;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube[tubeIndex].setLoadTimeConfig(loadTimeConfig);
+            }
+        }
+        break;
+        case CMD_SET_WEAPON_TUBE_SET_SIZE:
+        {
+            P<SpaceObject> target;
+            int tubeIndex, index;
+            packet >> target >> tubeIndex >> index;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube[tubeIndex].setSize(EMissileSizes(index));
+            }
+        }
+        break;
+        case CMD_SET_WEAPON_TUBE_ALLOW_LOAD_OF:
+        {
+            P<SpaceObject> target;
+            int tubeIndex, missileWeaponIndex;
+            packet >> target >> tubeIndex >> missileWeaponIndex;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube[tubeIndex].allowLoadOf(EMissileWeapons(missileWeaponIndex));
+            }
+        }
+        break;
+        case CMD_SET_WEAPON_TUBE_DISALLOW_LOAD_OF:
+        {
+            P<SpaceObject> target;
+            int tubeIndex, missileWeaponIndex;
+            packet >> target >> tubeIndex >> missileWeaponIndex;
+            P<SpaceShip> targetShip = target;
+            if (targetShip) {
+                targetShip->weapon_tube[tubeIndex].disallowLoadOf(EMissileWeapons(missileWeaponIndex));
+            }
+        }
+        break;
     }
 }
 
@@ -402,6 +476,48 @@ void GameMasterActions::commandSetWeaponStorage(P<PlayerSpaceship> target, int n
 {
     sf::Packet packet;
     packet << CMD_SET_WEAPON_STORAGE << target << n << max << amount;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeCount(P<PlayerSpaceship> target, int count)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_COUNT << target << count;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeSetDirection(P<PlayerSpaceship> target, int tube_index, float direction)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_SET_DIRECTION << target << tube_index << direction;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeSetLoadTimeConfig(P<PlayerSpaceship> target, int tube_index, float loadTimeConfig)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_SET_LOAD_TIME_CONFIG << target << tube_index << loadTimeConfig;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeSetSize(P<PlayerSpaceship> target, int tube_index, int index)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_SET_SIZE << target << tube_index << index;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeAllowLoadOf(P<PlayerSpaceship> target, int tube_index, int missileWeaponIndex)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_ALLOW_LOAD_OF << target << tube_index << missileWeaponIndex;
+    sendClientCommand(packet);
+}
+
+void GameMasterActions::commandSetWeaponTubeDisallowLoadOf(P<PlayerSpaceship> target, int tube_index, int missileWeaponIndex)
+{
+    sf::Packet packet;
+    packet << CMD_SET_WEAPON_TUBE_DISALLOW_LOAD_OF << target << tube_index << missileWeaponIndex;
     sendClientCommand(packet);
 }
 
