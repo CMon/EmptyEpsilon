@@ -37,13 +37,13 @@ GameMasterActions::GameMasterActions()
 }
 
 static inline sf::Packet& operator << (sf::Packet& packet, const P<SpaceObject>& object) { return packet << object->getMultiplayerId(); }
-static inline sf::Packet& operator >> (sf::Packet& packet, P<SpaceObject>& object) { 
+static inline sf::Packet& operator >> (sf::Packet& packet, P<SpaceObject>& object) {
     int selectedItemId;
     packet >> selectedItemId;
     object = game_server->getObjectById(selectedItemId);
     return packet;
 }
-static inline sf::Packet& operator << (sf::Packet& packet, /*const*/ PVector<SpaceObject>& objects) { 
+static inline sf::Packet& operator << (sf::Packet& packet, /*const*/ PVector<SpaceObject>& objects) {
     packet << int(objects.size());
     foreach(SpaceObject, object, objects)
     {
@@ -51,7 +51,7 @@ static inline sf::Packet& operator << (sf::Packet& packet, /*const*/ PVector<Spa
     }
     return packet;
 }
-static inline sf::Packet& operator >> (sf::Packet& packet, PVector<SpaceObject>& objects) { 
+static inline sf::Packet& operator >> (sf::Packet& packet, PVector<SpaceObject>& objects) {
     int selectedItemsLeft;
     packet >> selectedItemsLeft;
     while (selectedItemsLeft--) {
@@ -63,7 +63,7 @@ static inline sf::Packet& operator >> (sf::Packet& packet, PVector<SpaceObject>&
 }
 
 void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& packet)
-{   
+{
     int16_t command;
     packet >> command;
     switch(command)
@@ -200,7 +200,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
             {
                 if (obj)
                     obj->destroy();
-            }        
+            }
         }
         break;
         case CMD_SEND_COMM_TO_PLAYER_SHIP:
@@ -521,15 +521,17 @@ void GameMasterActions::commandSetWeaponTubeDisallowLoadOf(P<PlayerSpaceship> ta
     sendClientCommand(packet);
 }
 
+
+
 static int addGMFunction(lua_State* L)
 {
     if (!game_server && !my_player_info->isGMAccess())
         return 0;
-    
+
     const char* name = luaL_checkstring(L, 1);
 
     ScriptSimpleCallback callback;
-    
+
     int idx = 2;
     convert<ScriptSimpleCallback>::param(L, idx, callback);
 
@@ -547,7 +549,7 @@ static int removeGMFunction(lua_State* L)
 {
     if (!game_server && !my_player_info->isGMAccess())
         return 0;
-    
+
     string name = luaL_checkstring(L, 1);
     std::vector<uint32_t> indexesToDelete;
     for (uint32_t i = 0; i < gameGlobalInfo->gm_callback_names.size(); ++i)
@@ -583,14 +585,13 @@ static int getGMSelection(lua_State* L)
 {
     if (!game_server && !my_player_info->isGMAccess())
         return 0;
-    
+
     PVector<SpaceObject> objects;
     if (gameMasterActions->gmSelectionForRunningScript){
         objects = *gameMasterActions->gmSelectionForRunningScript;
-    } 
+    }
     return convert<PVector<SpaceObject> >::returnType(L, objects);
 }
 /// getGMSelection()
 /// Returns an list of objects that the GM currently has selected.
 REGISTER_SCRIPT_FUNCTION(getGMSelection);
-

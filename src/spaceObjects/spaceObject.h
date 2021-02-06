@@ -111,10 +111,10 @@ public:
     string callsign;
     float position_z;
     float hull;
-    
+
     string infos_label[10];
     string infos_value[10];
-    
+
     RawRadarSignatureInfo radar_signature;
 
     SpaceObject(float collisionRange, string multiplayerName, float multiplayer_significant_range=-1);
@@ -122,7 +122,7 @@ public:
 
     float getRadius() { return object_radius; }
     void setRadius(float radius) { object_radius = radius; setCollisionRadius(radius); }
-    
+
     float getPositionZ() { return position_z; }
     void setPositionZ(float z) { position_z = z; }
 
@@ -174,7 +174,7 @@ public:
     {
         return getDescription(getScannedStateFor(obj));
     }
-    
+
     void addInfos(int index, string label, string value)
     {
         if (index < 0 || index > 9)

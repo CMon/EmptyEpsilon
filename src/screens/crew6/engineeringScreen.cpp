@@ -48,7 +48,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     shield_bar->setColor(sf::Color(96, 96, 96, 128));
     shield_bar->setPosition(20, i, ATopLeft)->setSize(240, 40);
     shield_display = new GuiKeyValueDisplay(shield_bar, "SHIELD_DISPLAY", 0.45, tr("shields", "Shields"), "");
-    shield_display->isBackground(false)->setIcon("gui/icons/shields-all")->setTextSize(20)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);    
+    shield_display->isBackground(false)->setIcon("gui/icons/shields-all")->setTextSize(20)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     i += 40;
     oxygen_bar = new GuiProgressbar(this, "OXYGEN_BAR", 0.0, 1.0, 0.0);
     oxygen_bar->setColor(sf::Color(96, 96, 96, 128));
@@ -214,7 +214,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
     if (!gameGlobalInfo->use_nano_repair_crew)
         (new GuiShipInternalView(system_row_layouts, "SHIP_INTERNAL_VIEW", 48.0f))->setShip(my_spaceship)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-        
+
     if (gameGlobalInfo->use_nano_repair_crew)
     {
         box->setPosition(0, 20, ATopCenter)->setSize(450, 320);
@@ -222,7 +222,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         power_slider->setRange(0.0, 3.0)->setPosition(20, 60, ATopLeft)->setSize(400, 40);
         coolant_label->setHorizontal()->setPosition(20, 120, ATopLeft)->setSize(400, 20);
         coolant_slider->setRange(0.0, 10.0)->setPosition(20, 160, ATopLeft)->setSize(400, 40);
-        
+
         if (gameGlobalInfo->use_system_damage)
         {
             repair_label = new GuiLabel(box, "COOLANT_LABEL", tr("slider", "Repair"), 30);
@@ -270,7 +270,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         });
         preset_button_apply->setVisible(false);
         preset_button_apply->setTextSize(20);
-        preset_button_apply->setSize(100, 25);   
+        preset_button_apply->setSize(100, 25);
         presets_buttons.push_back(preset_button_apply);
         GuiButton* preset_button_update = new GuiButton(preset_button_layout, "", "", [this, presetId]()
         {
@@ -283,17 +283,17 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         preset_button_update->setVisible(false);
         preset_button_update->setTextSize(20);
         preset_button_update->setIcon("gui/icons/save-arrow");
-        preset_button_update->setSize(25, 25);   
+        preset_button_update->setSize(25, 25);
         presets_buttons.push_back(preset_button_update);
 
         //preset_button_layout->setVisible(false);
-        preset_button_layout->setSize(125, 25);   
+        preset_button_layout->setSize(125, 25);
         presets_buttons_layouts.push_back(preset_button_layout);
     }
 
 
     new ShipsLog(this, crew_position);
-    
+
     (new GuiCustomShipFunctions(this, crew_position, "", my_spaceship))->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     previous_energy_level = 0.0;
@@ -336,7 +336,7 @@ void EngineeringScreen::updatePreset(int preset)
     }
     power_saved_presets += string(my_spaceship->systems[SYS_COUNT-1].power_request, 2);
     coolant_saved_presets += string(my_spaceship->systems[SYS_COUNT-1].coolant_request, 2);
-    
+
     PreferencesManager::set("ENGINEERING.PRESET_POWER_"+string(preset), power_saved_presets);
     PreferencesManager::set("ENGINEERING.PRESET_COOLANT_"+string(preset), coolant_saved_presets);
 
@@ -419,7 +419,7 @@ void EngineeringScreen::onDraw(sf::RenderTarget& window)
         oxygen_display->setValue(string(oxygen_level / oxygen_max * 100,1) + "%");
         oxygen_bar->setVisible(oxygen_max > 0);
         oxygen_bar->setValue(oxygen_level / oxygen_max);
-        
+
         for(int n=0; n<SYS_COUNT; n++)
         {
             SystemRow info = system_rows[n];
@@ -555,7 +555,7 @@ void EngineeringScreen::onHotkey(const HotkeyResult& key)
             {
                 int n = ESystem(int(selected_system) + 1);
 
-                while (n<SYS_COUNT)                
+                while (n<SYS_COUNT)
                 {
                     if (my_spaceship->hasSystem(ESystem(n)))
                     {
@@ -576,7 +576,7 @@ void EngineeringScreen::onHotkey(const HotkeyResult& key)
             {
                 int n = ESystem(int(selected_system) - 1);
 
-                while (n>=0)                
+                while (n>=0)
                 {
                     if (my_spaceship->hasSystem(ESystem(n)))
                     {
@@ -596,7 +596,7 @@ void EngineeringScreen::onHotkey(const HotkeyResult& key)
             for(int n=0; n<SYS_COUNT; n++)
                 if (my_spaceship->hasSystem(ESystem(n)))
                     n_systems ++;
-                    
+
             for(int n=0; n<SYS_COUNT; n++)
             {
                 ESystem system = ESystem(n);
@@ -707,7 +707,7 @@ void EngineeringScreen::onHotkey(const HotkeyResult& key)
             }
         }
 
-        for(int presetId=1; presetId < 10; presetId++) 
+        for(int presetId=1; presetId < 10; presetId++)
         {
             if (presetId <= my_spaceship->active_engineer_presets_number)
             {
