@@ -7,6 +7,8 @@
 #include "factionInfo.h"
 #include "shipTemplate.h"
 
+#include <sstream>
+
 enum EDamageType
 {
     DT_Energy = 0,
@@ -257,6 +259,41 @@ public:
     virtual void takeDamage(float damage_amount, DamageInfo info);
     virtual std::unordered_map<string, string> getGMInfo() { return std::unordered_map<string, string>(); }
     virtual string getExportLine() { return ""; }
+    string getAppendExportLine() {
+        std::ostringstream retval;
+        if(getCallSign() != "") retval << ":setCallSign(\"" << getCallSign() << "\")";
+        if(getFaction() != "")  retval << ":setFaction(\"" << getFaction() << "\")";
+
+        for(int i = 0; i < 10; ++i) {
+            if(getInfosLabel(i) == "") continue;
+            retval << ":addInfos(" << i << ", \"" << getInfosLabel(i) << "\", \"" << getInfosValue(i) << "\")";
+        }
+
+        // ":setRadius(" << getRadius() << ") is not supported
+        if(getPositionZ() != 0.0) retval << ":setPositionZ(" << getPositionZ() << ")";
+        if(getRadarSignatureGravity() != 0 || getRadarSignatureElectrical() != 0 || getRadarSignatureBiological() != 0) retval << ":setRadarSignatureInfo(" << getRadarSignatureGravity() << ", " << getRadarSignatureElectrical() << ", " << getRadarSignatureBiological() << ")";
+
+        for(int i = SS_NotScanned; i <= SS_FullScan; ++i) {
+            if(getDescription(static_cast<EScannedState>(i)) != "") {
+                retval << ":setDescriptionForScanState(";
+                switch (static_cast<EScannedState>(i))
+                {
+                case SS_NotScanned:            retval << "\"notscanned\""; break;
+                case SS_FriendOrFoeIdentified: retval << "\"friendorfoeidentified\""; break;
+                case SS_SimpleScan:            retval << "\"simplescan\""; break;
+                case SS_FullScan:              retval << "\"fullscan\""; break;
+                }
+                retval << ", \"" << getDescription(static_cast<EScannedState>(i)) << "\")";
+            }
+        }
+
+        if(getHeading() != 0)          retval << ":setHeading(" << getHeading() << ")";
+        if(getFactionId() != 0)        retval << ":setFactionId(" << getFactionId() << ")";
+        if(getPersonalityId() != 0)    retval << ":setPersonalityId(" << getPersonalityId() << ")";
+        if(getReputationPoints() != 0) retval << ":setReputationPoints(" << getReputationPoints() << ")";
+
+        return retval.str();
+    }
 
     static void damageArea(sf::Vector2f position, float blast_range, float min_damage, float max_damage, DamageInfo info, float min_range);
 

@@ -125,5 +125,5 @@ string Artifact::getExportLine()
     ret += ":setModel(\"" + model_data_name + "\")";
     if (allow_pickup)
         ret += ":allowPickup(true)";
-    return ret;
+    return ret + getAppendExportLine();
 }
