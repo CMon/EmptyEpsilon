@@ -12,6 +12,7 @@ private:
     ScriptSimpleCallback on_pickup_callback;
 public:
     Artifact();
+    virtual ~Artifact();
 
     virtual void update(float delta) override;
 

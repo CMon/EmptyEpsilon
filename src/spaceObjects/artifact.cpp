@@ -41,6 +41,11 @@ Artifact::Artifact()
     allow_pickup = false;
 }
 
+//due to a suspected compiler bug (mingw) this deconstructor needs to be explicitly defined
+Artifact::~Artifact()
+{
+}
+
 void Artifact::update(float delta)
 {
     if (current_model_data_name != model_data_name)
