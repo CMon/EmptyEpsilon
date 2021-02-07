@@ -21,7 +21,7 @@ public:
 
     void setSize(float size);
 
-    virtual string getExportLine() override { return "Asteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")"; }
+    virtual string getExportLine() override { return "Asteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getAppendExportLine(); }
 };
 
 class VisualAsteroid : public SpaceObject
@@ -40,7 +40,7 @@ public:
     virtual bool canBeTargetedBy(P<SpaceObject> other) { return false; };
     virtual bool canBeSelectedBy(P<SpaceObject> other) { return false; };
 
-    virtual string getExportLine() override { return "VisualAsteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")"; }
+    virtual string getExportLine() override { return "VisualAsteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getAppendExportLine(); }
 };
 
 #endif//ASTEROID_H

@@ -33,7 +33,7 @@ public:
     void explode();
     void onDestruction(ScriptSimpleCallback callback);
 
-    virtual string getExportLine() override { return "Mine():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")"; }
+    virtual string getExportLine() override { return "Mine():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getAppendExportLine(); }
 
 private:
     const MissileWeaponData& data;

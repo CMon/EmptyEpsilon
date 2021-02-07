@@ -377,5 +377,5 @@ string Planet::getExportLine()
     //TODO setPlanetCloudRadius
     //TODO setAxialRotationTime
     //TODO setOrbit
-    return ret;
+    return ret + getAppendExportLine();
 }

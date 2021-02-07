@@ -100,11 +100,11 @@ void SupplyDrop::setWeaponStorage(EMissileWeapons weapon, int amount)
 
 string SupplyDrop::getExportLine()
 {
-    string ret = "SupplyDrop():setFaction(\"" + getFaction() + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")";
+    string ret = "SupplyDrop():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")";
     if (energy > 0)
         ret += ":setEnergy(" + string(energy, 0) + ")";
     for(int n=0; n<MW_Count; n++)
         if (weapon_storage[n] > 0)
             ret += ":setWeaponStorage(\"" + getMissileWeaponName(EMissileWeapons(n)) + "\", " + string(weapon_storage[n]) + ")";
-    return ret;
+    return ret + getAppendExportLine();
 }

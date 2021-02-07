@@ -266,7 +266,7 @@ std::unordered_map<string, string> CpuShip::getGMInfo()
 
 string CpuShip::getExportLine()
 {
-    string ret = "CpuShip():setFaction(\"" + getFaction() + "\"):setTemplate(\"" + template_name + "\"):setCallSign(\"" + getCallSign() + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")";
+    string ret = "CpuShip():setTemplate(\"" + template_name + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getAppendExportLine();
     switch(orders)
     {
     case AI_Idle: break;

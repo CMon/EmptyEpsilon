@@ -31,7 +31,7 @@ public:
     sf::Vector2f getTargetPosition();
     void onTeleportation(ScriptSimpleCallback callback);
 
-    virtual string getExportLine() override { return "WormHole():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + "):setTargetPosition(" + string(target_position.x, 0) + ", " + string(target_position.y, 0) + ")"; }
+    virtual string getExportLine() override { return "WormHole():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + "):setTargetPosition(" + string(target_position.x, 0) + ", " + string(target_position.y, 0) + ")" + getAppendExportLine(); }
 };
 
 #endif//WORM_HOLE_H

@@ -110,5 +110,5 @@ bool SpaceStation::canBeDockedBy(P<SpaceObject> obj)
 
 string SpaceStation::getExportLine()
 {
-    return "SpaceStation():setTemplate(\"" + template_name + "\"):setFaction(\"" + getFaction() + "\"):setCallSign(\"" + getCallSign() + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")";
+    return "SpaceStation():setTemplate(\"" + template_name + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getAppendExportLine();
 }
